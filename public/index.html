@@ -1,6 +1,30 @@
 <head>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
 
+    <script>
+        $("document").ready(function() {
+            $.get({
+                url: 'wc/list/nearby',
+                success: function(data) {
+                    
+
+                    $("#cams").empty();
+                    var cams = data.result.webcams;
+                    for (var i = 0; i < cams.length; i++) {
+                        var cam = cams[i];
+                        var title = cam.title;
+                        var preview = cam.image.current.preview;
+                        $("#cams").append("<img src='" + preview + "'></img>")
+                    }
+                }            
+            })
+        });
+    </script>
 </head>
 <body>
-    First commit
+    <div id="cams">
+    </div>
 </body>

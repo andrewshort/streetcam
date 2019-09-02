@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/public/'));
 var router = express.Router();
 
 router.get('/list/nearby', function(req, res) {
-	var webreq = unirest("GET", "https://webcamstravel.p.rapidapi.com/webcams/list/nearby=39.76,-86.16,100");
+	var webreq = unirest("GET", "https://webcamstravel.p.rapidapi.com/webcams/list/nearby=39.76,-86.16,150");
 
     webreq.query({
         "lang": "en",
