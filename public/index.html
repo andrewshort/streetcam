@@ -6,22 +6,30 @@
 
     <script>
         $("document").ready(function() {
-            $.get({
-                url: 'wc/list/nearby',
-                success: function(data) {
-                    
-
-                    $("#cams").empty();
-                    var cams = data.result.webcams;
-                    for (var i = 0; i < cams.length; i++) {
-                        var cam = cams[i];
-                        var title = cam.title;
-                        var preview = cam.image.current.preview;
-                        $("#cams").append("<img src='" + preview + "' title='" + title + "'></img>")
-                    }
-                }            
-            })
+            loadImages();
+            setInterval(function() {
+                loadImages();
+            }, 60000);
+            
         });
+
+        function loadImages() {
+            $.get({
+                    url: 'wc/list/nearby',
+                    success: function(data) {
+                        
+
+                        $("#cams").empty();
+                        var cams = data.result.webcams;
+                        for (var i = 0; i < cams.length; i++) {
+                            var cam = cams[i];
+                            var title = cam.title;
+                            var preview = cam.image.current.preview;
+                            $("#cams").append("<img src='" + preview + "' title='" + title + "'></img>")
+                        }
+                    }            
+                });
+        }
     </script>
 </head>
 <body>
