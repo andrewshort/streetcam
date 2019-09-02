@@ -1,0 +1,27 @@
+{
+    "name": "streetcam",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node app.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/andrewshort/streetcam.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/andrewshort/streetcam/issues"
+    },
+    "homepage": "https://github.com/andrewshort/streetcam#readme",
+    "dependencies": {
+      "compress": "^0.99.0",
+      "express": "^4.16.3",
+      "expression": "0.0.1",
+      "socket.io": "^2.1.1"
+    }
+  }
+  
