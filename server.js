@@ -8,8 +8,9 @@ app.use(express.static(__dirname + '/public/'));
 
 var router = express.Router();
 
-router.get('/list/nearby', function(req, res) {
-	var webreq = unirest("GET", "https://webcamstravel.p.rapidapi.com/webcams/list/nearby=39.76,-86.16,120");
+router.get('/list', function(req, res) {
+    var nearby = req.query.nearby;
+	var webreq = unirest("GET", "https://webcamstravel.p.rapidapi.com/webcams/list/nearby=" + nearby);
 
     webreq.query({
         "lang": "en",
@@ -27,8 +28,6 @@ router.get('/list/nearby', function(req, res) {
             console.log(webres.error);
             res.json(webres.error)
         }
-
-        console.log(webres.body);
 
         res.json(webres.body);
     });

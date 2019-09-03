@@ -1,21 +1,68 @@
 <head>
+
+    <style>
+    #map {
+        width: 100%;
+        height: 400px;
+        background-color: grey;
+    }
+    </style>
+<script src="OpenLayers.js"></script>
     <script
     src="https://code.jquery.com/jquery-3.4.1.js"
     integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
 
     <script>
+        var currentLocation;
         $("document").ready(function() {
-            loadImages();
-            setInterval(function() {
-                loadImages();
-            }, 60000);
-            
+            initMap();
         });
 
-        function loadImages() {
+        function initMap() {
+            var map =            new OpenLayers.Map("map");
+            var mapnik         = new OpenLayers.Layer.OSM();
+            var wgs84 = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var mercator   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var position       = new OpenLayers.LonLat(-86.16,39.76).transform( wgs84, mercator);
+            var zoom           = 9; 
+
+            map.addLayer(mapnik);
+
+            var handler = new OpenLayers.Handler.Click(
+                   mapnik, { 
+                    click: function(evt) {
+                        console.log('click has triggered');
+                        var pixel = evt.xy;
+                        var location = map.getLonLatFromPixel(pixel);
+                        map.setCenter(location);
+                        currentLocation = location.transform(mercator, wgs84);
+                        loadImages(currentLocation.lat, currentLocation.lon);
+                        
+                    }
+                    ,dblclick: function(evt) {
+                        console.log('dblclick has triggered');
+                    }
+                    },{
+                    single: true  
+                    ,double: true
+                    ,stopSingle: true
+                    ,stopDouble: true
+                    }  
+                    );
+                    handler.activate();
+
+            
+            map.setCenter(position, zoom );
+            currentLocation = position.transform(mercator, wgs84);
+            loadImages(currentLocation.lat, currentLocation.lon);
+        }
+
+
+        function loadImages(lat, lng) {
             $.get({
-                    url: 'wc/list/nearby',
+                    //url: 'wc/list?nearby=39.76,-86.16,120',
+                    url: 'wc/list?nearby=' + lat + ',' + lng + ',120',
                     success: function(data) {
                         
 
@@ -33,6 +80,9 @@
     </script>
 </head>
 <body>
+    <div id="map">
+
+    </div>
     <div id="cams">
     </div>
 </body>
