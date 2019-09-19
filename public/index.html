@@ -18,7 +18,7 @@
     <script>
         var geomap;
         $("document").ready(function() {
-            var geomap = new window.geomap("map");
+            geomap = new window.geomap("map");
 
             geomap.onmapclick(function(loc) {
                 console.log('index.html map click');
@@ -43,6 +43,8 @@
                             var title = cam.title;
                             var preview = cam.image.current.preview;
                             $("#cams").append("<img src='" + preview + "' title='" + title + "'></img>")
+
+                            geomap.addMarker(cam.location.latitude, cam.location.longitude);
                         }
                     }            
                 });

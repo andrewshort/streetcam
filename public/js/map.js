@@ -11,11 +11,27 @@ var geomap = function(elem) {
     this.map.addLayer(this.mapnik);
     this.map.setCenter(this.position, this.zoom );
 
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    this.map.addLayer(markers);
+    
+    
+    
+    this.addMarker = function(lat, lng) {
+        var lonLat = new OpenLayers.LonLat( lng, lat )
+        .transform(wgs84,
+            this.map.getProjectionObject() // to Spherical Mercator Projection
+        );
+
+        markers.addMarker(new OpenLayers.Marker(lonLat));
+    }
+
     this.setCenter = function(lat, lng, zoom) {
         this.position = new OpenLayers.LonLat(lng,lat).transform( wgs84, mercator);
-        this.zoom = zoom || this.zoom;
+        this.zoom = zoom || this.map.getZoom();;
         
         this.map.setCenter(this.position, this.zoom);
+
+        
     };
 
     this.getCenter = function() {
