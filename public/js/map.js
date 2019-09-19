@@ -11,18 +11,60 @@ var geomap = function(elem) {
     this.map.addLayer(this.mapnik);
     this.map.setCenter(this.position, this.zoom );
 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    this.map.addLayer(markers);
+    //var markers = new OpenLayers.Layer.Markers( "Markers" );
     
+    //this.map.addLayer(markers);
     
+    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+    this.map.addLayer(vectorLayer);
+
+    //Add a selector control to the vectorLayer with popup functions
+    var controls = {
+        selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
+      };
+
+
+    this.map.addControl(controls['selector']);
+    controls['selector'].activate();
+  
+    function createPopup(feature) {
+        feature.popup = new OpenLayers.Popup.FramedCloud("pop",
+            feature.geometry.getBounds().getCenterLonLat(),
+            null,
+            '<div style="width:400px;height:244px"><img src="' + feature.attributes.featureImg + '" title="' + feature.attributes.featureTitle + '"></img></div>',
+            null,
+            true,
+            function() { controls['selector'].unselectAll(); }
+        );
+        //feature.popup.closeOnMove = true;
+        this.map.addPopup(feature.popup);
+    }
+  
+      function destroyPopup(feature) {
+        feature.popup.destroy();
+        feature.popup = null;
+      }
+
+    this.addMarker = function(lat, lng, featureImg, featureTitle) {
+        
     
-    this.addMarker = function(lat, lng) {
+        // Define markers as "features" of the vector layer:
+        var feature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point( lng, lat ).transform(wgs84, this.map.getProjectionObject()),
+                {description:'This is the value of<br>the description attribute' , featureImg: featureImg, featureTitle: featureTitle } ,
+                {externalGraphic: 'img/marker.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+            );    
+        vectorLayer.addFeatures(feature);
+
+
+        /*
         var lonLat = new OpenLayers.LonLat( lng, lat )
         .transform(wgs84,
             this.map.getProjectionObject() // to Spherical Mercator Projection
         );
 
         markers.addMarker(new OpenLayers.Marker(lonLat));
+        */
     }
 
     this.setCenter = function(lat, lng, zoom) {
@@ -69,7 +111,7 @@ var geomap = function(elem) {
                     ,stopDouble: true
                 } 
             );
-            handler.activate();
+           // handler.activate();
     }
 
     
