@@ -60,43 +60,7 @@ var geomap = function(elem) {
         return new OpenLayers.LonLat(center.lon,center.lat).transform( mercator, wgs84 );
     }
 
-    this.onmapclick = function(cb) {
-        console.log('onmapclick');
-        this._clickCallback = cb;
-
-        var handler = new OpenLayers.Handler.Click(
-            this.mapnik, { 
-                    click: function(evt) {
-                        console.log('click has triggered');
-                        var pixel = evt.xy;
-                        var location = this.map.getLonLatFromPixel(pixel)
-                            .transform( mercator, wgs84);
-    
-                        if (cb) {
-                            cb(location);
-                        } else {
-                            console.log('no click callback')
-                        }
-                        
-                        
-                    }
-                    ,dblclick: function(evt) {
-                        console.log('dblclick has triggered');
-                    }
-                },
-                {
-                    single: true  
-                    ,double: true
-                    ,stopSingle: true
-                    ,stopDouble: true
-                } 
-            );
-           // handler.activate();
-    }
-
-    this.setCenter(39.76, -86.16, 9 );
-
-    
+    this.setCenter(39.76, -86.16, 9 );    
 };
 
 window.geomap = geomap;

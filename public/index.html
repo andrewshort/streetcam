@@ -20,12 +20,6 @@
         $("document").ready(function() {
             geomap = new window.geomap("map");
 
-            geomap.onmapclick(function(loc) {
-                console.log('index.html map click');
-                geomap.setCenter(loc.lat, loc.lon);
-                loadImages(loc.lat, loc.lon);
-            });
-
             var center = geomap.getCenter();
             loadImages(center.lat, center.lon);
         });
