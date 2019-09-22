@@ -1,0 +1,20 @@
+#map {
+    width: 100%;
+    height: 100%;
+    background-color: grey;
+}
+
+#searchDiv {
+    position: absolute;
+    top:10px;
+    z-index: 1000;
+    left: 100px;
+}
+
+#searchDiv input {
+    width: 300px;
+}
+
+.olControlAttribution {
+    display: none !important;
+}

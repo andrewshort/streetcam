@@ -1,17 +1,19 @@
 <head>
 
-    <style>
-    #map {
-        width: 100%;
-        height: 100%;
-        background-color: grey;
-    }
-    </style>
+    <link rel="stylesheet" href="css/main.css">
 <script src="OpenLayers.js"></script>
     <script
     src="https://code.jquery.com/jquery-3.4.1.js"
     integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script src="js/map.js" type="text/javascript"></script>
 
@@ -22,22 +24,47 @@
 
             var center = geomap.getCenter();
             loadImages(center.lat, center.lon);
+
+            $('#searchAddress').keypress(function (e) {
+                
+                var key = e.which;
+                if(key == 13)  // the enter key code
+                {
+                    var searchAddress = $('#searchAddress').val();
+                    $.get({
+                            //url: 'wc/list?nearby=39.76,-86.16,120',
+                            url: 'wc/addresssearch?q=' + searchAddress,
+                            success: function(data) {
+                                if (data.length > 0) { // take first result for now
+                                    var lat = data[0].lat;
+                                    var lon = data[0].lon;
+                                    geomap.setCenter(lat, lon, 12);
+                                    loadImages(lat, lon);
+                                }
+                            }
+
+                        });
+                }
+            });
         });
 
+        
+
         function loadImages(lat, lng) {
+            var center = geomap.getCenter();
+            var lat = center.lat;
+            var lng = center.lon;
             $.get({
                     //url: 'wc/list?nearby=39.76,-86.16,120',
                     url: 'wc/list?nearby=' + lat + ',' + lng + ',120',
                     success: function(data) {
                         
-                        $("#cams").empty();
                         var cams = data.result.webcams;
                         for (var i = 0; i < cams.length; i++) {
                             var cam = cams[i];
                             var title = cam.title;
                             var preview = cam.image.current.preview;
-                            //$("#cams").append("<img src='" + preview + "' title='" + title + "'></img>")
-
+                            
                             geomap.addMarker(cam.location.latitude, cam.location.longitude, cam.image.current.preview, cam.title);
                         }
                     }            
@@ -46,9 +73,11 @@
     </script>
 </head>
 <body>
+    <div id="searchDiv">
+        <input id="searchAddress" type="text" class="form-control" placeholder="Enter Search Address" />
+    </div>
     <div id="map">
 
     </div>
-    <div id="cams">
-    </div>
+    
 </body>
