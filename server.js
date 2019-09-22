@@ -38,7 +38,7 @@ router.get('/list', function(req, res) {
 
     webreq.headers({
         "x-rapidapi-host": "webcamstravel.p.rapidapi.com",
-        "x-rapidapi-key": "f52d72a488msh0d8da40727b9a8bp1ece6ejsnd5579f2540ca"
+        "x-rapidapi-key": process.env.rapidapikey
     });
 
 
