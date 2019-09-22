@@ -8,6 +8,26 @@ app.use(express.static(__dirname + '/public/'));
 
 var router = express.Router();
 
+router.get('/flickr', function(req, res) {
+    
+    var lat = req.query.lat;
+    var lon = req.query.lon;
+    var radius = req.query.radius;
+    var uri = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=" + process.env.flickrkey + "&has_geo=1&extras=geo&lat=" + lat + "&lon=" + lon + "&radius=" + radius + "&format=json&nojsoncallback=1"
+
+    var webreq = unirest("GET", uri);
+    
+    webreq.end(function (webres) {
+        if (webres.error) {
+            console.log(webres.error);
+            res.json(webres.error);
+            return;
+        }
+
+        res.json(webres.body);
+    });
+});
+
 router.get('/addresssearch', function(req, res) {
     
     var q = req.query.q;
