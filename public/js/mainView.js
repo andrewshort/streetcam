@@ -53,6 +53,24 @@
                         }
                     }            
                 });
+
+                $.get({
+                    //url: 'wc/list?nearby=39.76,-86.16,120',
+                    url: 'wc/flickr?lat=' + lat + '&lon=' + lng + '&radius=10',
+                    success: function(data) {
+                        var photoArr = data.photos.photo;
+                        
+                        for (var i = 0; i < photoArr.length; i++) {
+                            var photo = photoArr[i];
+                            
+
+                            // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}.jpg 
+                            var url = 'http://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret + '.jpg';  
+                            geomap.addMarker(photo.latitude, photo.longitude, url, photo.title);
+                        }
+                        
+                    }            
+                });
         }
     };
 
