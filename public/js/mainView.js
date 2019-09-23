@@ -17,7 +17,7 @@
                     var searchAddress = $('#searchAddress').val();
                     $.get({
                             //url: 'wc/list?nearby=39.76,-86.16,120',
-                            url: 'wc/addresssearch?q=' + searchAddress,
+                            url: 'geo/addresssearch?q=' + searchAddress,
                             success: function(data) {
                                 if (data.length > 0) { // take first result for now
                                     var lat = data[0].lat;
