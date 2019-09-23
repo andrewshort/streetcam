@@ -60,7 +60,7 @@ var geomap = function(elem) {
         return new OpenLayers.LonLat(center.lon,center.lat).transform( mercator, wgs84 );
     }
 
-    this.setCenter(39.76, -86.16, 9 );    
+    this.setCenter(39.76, -86.16, 11 );    
 };
 
 window.geomap = geomap;
