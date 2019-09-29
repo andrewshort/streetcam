@@ -11,6 +11,13 @@
     left: 100px;
 }
 
+#researchDiv {
+    position: absolute;
+    top: 10px;
+    z-index: 1000;
+    left: 450px;
+}
+
 #searchDiv input {
     width: 300px;
 }

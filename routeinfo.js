@@ -37,7 +37,7 @@ routeInfo['cam'] = {
 }
 
 routeInfo['flickr'] = {
-    urltemplate: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=" + process.env.flickrkey + "&has_geo=1&extras=geo&lat={{lat}}&lon={{lon}}&radius=10&format=json&nojsoncallback=1",
+    urltemplate: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=" + process.env.flickrkey + "&has_geo=1&extras=geo&lat={{lat}}&lon={{lon}}&radius=5&format=json&nojsoncallback=1",
     transform: function(data) {
 
         var response = {

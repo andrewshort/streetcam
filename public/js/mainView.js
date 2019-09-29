@@ -9,6 +9,11 @@
             var center = geomap.getCenter();
             loadImages(center.lat, center.lon);
 
+            $('#searchHereButton').click(function() {
+                var center = geomap.getCenter();
+                loadImages(center.lat, center.lon);
+            });
+
             $('#searchAddress').keypress(function (e) {
                 
                 var key = e.which;
