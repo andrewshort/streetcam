@@ -3,9 +3,32 @@ var app = express();
 var http = require('http').Server(app);
 var unirest = require("unirest");
 var routeinfo = require("./routeinfo.js");
+var url  = require('url');
+var path = require('path');
 
-// Serve up content from public directory
+//Loads the handlebars module
+const handlebars = require('express-handlebars');
+//Sets our app to use the handlebars engine
+
+app.set('view engine', 'handlebars');
+
+app.set('views', path.join(__dirname, 'views'));
+
+app.engine('handlebars', handlebars.create({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    layoutsDir: path.join(__dirname, 'views', 'layouts'),
+    partialsDir: path.join(__dirname, 'views', 'partials')}
+).engine);
+
+
+// Serve up content from public directo`ry
 app.use(express.static(__dirname + '/public/'));
+
+app.get('/', (req, res) => {
+    //Serves the body of the page aka "main.handlebars" to the container //aka "index.handlebars"
+    res.render('main', {layout : 'index'});
+    });
 
 var routerGeo = express.Router();
 
@@ -67,5 +90,27 @@ routerGeo.get('/', function(req, res) {
 });
 
 app.use('/geo', routerGeo);
+
+app.get('/windy/cam/*', function(req, res) {
+    var url_parts = url.parse(req.url);
+    console.log(url_parts);
+    console.log(url_parts.pathname);
+
+    var path = url_parts.pathname.replace('/windy/cam', '') + '?show=webcams:location,image';
+    var base_url = 'https://api.windy.com/api/webcams/v2'
+    var webreq = unirest("GET", base_url + path);
+    webreq.headers({
+        'x-windy-key': process.env.windykey
+    })
+    
+    webreq.end(function (webres) {
+        if (webres.error) {
+            res.json(webres.error);
+            return;
+        }
+
+        res.json(webres.body);
+    });
+});
 
 http.listen(process.env.PORT || 3000);
