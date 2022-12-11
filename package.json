@@ -19,7 +19,7 @@
   "homepage": "https://github.com/andrewshort/streetcam#readme",
   "dependencies": {
     "compress": "^0.99.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "expression": "0.0.1",
     "socket.io": "^2.1.1",
     "unirest": "^0.6.0"
